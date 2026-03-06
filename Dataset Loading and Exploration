@@ -1,0 +1,67 @@
+from sklearn.datasets import load_digits
+import numpy as np
+
+
+def load_data():
+    """Load the digits dataset into arrays."""
+    
+    data = load_digits()
+    
+    X = data.images
+    y = data.target
+    
+    return X, y
+
+
+def explore_data(X, y):
+    """
+    Analyze the dataset: shapes, class distribution, and value range.
+    """
+
+    # Total number of samples
+    num_samples = X.shape[0]
+
+    # Shape of one image
+    image_shape = X[0].shape
+
+    # Number of classes
+    num_classes = len(np.unique(y))
+
+    # Class distribution
+    unique, counts = np.unique(y, return_counts=True)
+    class_distribution = dict(zip(unique, counts))
+
+    # Pixel value range
+    pixel_range = (np.min(X), np.max(X))
+
+    # Missing values check
+    has_missing_values = np.isnan(X).any() or np.isnan(y).any()
+
+    info = {
+        'num_samples': num_samples,
+        'image_shape': image_shape,
+        'num_classes': num_classes,
+        'class_distribution': class_distribution,
+        'pixel_range': pixel_range,
+        'has_missing_values': has_missing_values
+    }
+
+    return info
+
+
+if __name__ == "__main__":
+    
+    X, y = load_data()
+    
+    dataset_info = explore_data(X, y)
+    
+    print("\n=== Digits Dataset Information ===")
+    print(f"Total samples       : {dataset_info['num_samples']}")
+    print(f"Image shape         : {dataset_info['image_shape']}")
+    print(f"Number of classes   : {dataset_info['num_classes']}")
+    print(f"Pixel value range   : {dataset_info['pixel_range']}")
+    print(f"Has missing values? : {dataset_info['has_missing_values']}")
+    
+    print("\nClass distribution:")
+    for cls, count in dataset_info['class_distribution'].items():
+        print(f"  Class {cls}: {count} samples")
